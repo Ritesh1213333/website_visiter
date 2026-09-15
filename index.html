@@ -423,44 +423,26 @@ export const authRouter = router;</code></pre>
   <h3>4) postLogin</h3>
   <pre><code>export const postLogin = (req, res) => {
   const { email, password, remember } = req.body;
+  const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days active
 
-  // 1. Agar 'Remember me' click hua hai toh SARE COOKIES ACTIVE KARO!
   if (remember) {
-    let allVisits = {};
-    try {
-      allVisits = req.cookies.allVisits ? JSON.parse(req.cookies.allVisits) : {};
-    } catch (e) {
-      allVisits = {};
-    }
-
-    let visits = (allVisits[email] || 0) + 1;
-    allVisits[email] = visits;
-
-    const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days active
-
-    // SARE COOKIES EK SAATH ACTIVE:
+    // 1. Agar 'Remember me' CLICK hua hai:
     res.cookie("IsLoggedIn", "true", { httpOnly: true, maxAge });
     res.cookie("userEmail", email, { maxAge });
-    res.cookie("remember", "true", { maxAge });
     res.cookie("theme", req.cookies.theme || "light", { maxAge });
-    res.cookie("visits", String(visits), { maxAge });
-    res.cookie("allVisits", JSON.stringify(allVisits), { maxAge });
-
-    return res.redirect("/");
+    res.cookie("remember", "true", { maxAge });
   } else {
     // 2. Agar 'Remember me' click NAHI hai:
-    // userEmail, theme aur IsLoggedIn cookies mein dikhega:
     res.cookie("IsLoggedIn", "true", { httpOnly: true });
     res.cookie("userEmail", email);
     res.cookie("theme", req.cookies.theme || "light");
 
-    // Lekin visits aur remember cookies set nahi hongi:
     res.clearCookie("remember");
     res.clearCookie("visits");
     res.clearCookie("allVisits");
-
-    return res.redirect("/");
   }
+
+  return res.redirect("/");
 };</code></pre>
   <ul class="def-list">
     <li><strong>Remember me Clicked (Checked):</strong> <code>IsLoggedIn</code>, <code>userEmail</code>, <code>theme</code> ke sath-sath <strong><code>visits</code></strong> aur <strong><code>remember</code></strong> cookies bhi active ho kar 7 days ke liye browser mein store hoti hain.</li>
