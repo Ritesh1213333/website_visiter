@@ -424,56 +424,89 @@ export const authRouter = router;</code></pre>
   <pre><code>export const postLogin = (req, res) => {
   const { email, password, remember } = req.body;
 
-  // Login cookie set karo
-  res.cookie("IsLoggedIn", "true", { httpOnly: true });
-
-  // Agar 'Remember me' par click kiya hai toh email save karo
+  // 1. Agar 'Remember me' click hua hai toh SARE COOKIES ACTIVE KARO!
   if (remember) {
-    res.cookie("userEmail", email, { maxAge: 7 * 24 * 60 * 60 * 1000 });
-  } else {
-    res.cookie("userEmail", email);
-  }
+    let allVisits = {};
+    try {
+      allVisits = req.cookies.allVisits ? JSON.parse(req.cookies.allVisits) : {};
+    } catch (e) {
+      allVisits = {};
+    }
 
-  return res.redirect("/");
+    let visits = (allVisits[email] || 0) + 1;
+    allVisits[email] = visits;
+
+    const maxAge = 7 * 24 * 60 * 60 * 1000; // 7 days active
+
+    // SARE COOKIES EK SAATH ACTIVE:
+    res.cookie("IsLoggedIn", "true", { httpOnly: true, maxAge });
+    res.cookie("userEmail", email, { maxAge });
+    res.cookie("remember", "true", { maxAge });
+    res.cookie("theme", req.cookies.theme || "light", { maxAge });
+    res.cookie("visits", String(visits), { maxAge });
+    res.cookie("allVisits", JSON.stringify(allVisits), { maxAge });
+
+    return res.redirect("/");
+  } else {
+    // 2. Agar 'Remember me' click NAHI hai:
+    // userEmail, theme aur IsLoggedIn cookies mein dikhega:
+    res.cookie("IsLoggedIn", "true", { httpOnly: true });
+    res.cookie("userEmail", email);
+    res.cookie("theme", req.cookies.theme || "light");
+
+    // Lekin visits aur remember cookies set nahi hongi:
+    res.clearCookie("remember");
+    res.clearCookie("visits");
+    res.clearCookie("allVisits");
+
+    return res.redirect("/");
+  }
 };</code></pre>
   <ul class="def-list">
-    <li><code>res.cookie("IsLoggedIn", "true", { httpOnly: true })</code> — Authentication cookie set karta hai. <code>httpOnly: true</code> flag se client JavaScript (jaise <code>document.cookie</code>) is cookie ko chori ya modify nahi kar sakti, jo XSS attacks se protect karta hai.</li>
-    <li><code>if (remember)</code> — Agar user ne "Remember me" checkbox tick kiya tha, toh cookie ko <strong>7 days</strong> ka <code>maxAge</code> diya jata hai (<code>7 * 24 * 60 * 60 * 1000 ms</code>). Agar tick nahi kiya toh temporary session cookie banti hai.</li>
-    <li><code>res.redirect("/")</code> — Login successful hone ke baad user ko protected home page par bhej deta hai.</li>
+    <li><strong>Remember me Clicked (Checked):</strong> <code>IsLoggedIn</code>, <code>userEmail</code>, <code>theme</code> ke sath-sath <strong><code>visits</code></strong> aur <strong><code>remember</code></strong> cookies bhi active ho kar 7 days ke liye browser mein store hoti hain.</li>
+    <li><strong>Remember me Unchecked (Not Clicked):</strong> <code>userEmail</code>, <code>theme</code> aur <code>IsLoggedIn</code> toh browser mein dikhti hain, lekin <strong><code>visits</code></strong> aur <strong><code>remember</code></strong> cookies set <strong>nahi</strong> hoti hain (visit counter inactive rehta hai).</li>
   </ul>
 
   <div class="page-break"></div>
 
   <!-- PAGE 5: CONTROLLERS (VISITS, THEME, LOGOUT) -->
-  <h3>5) getHome (Per-Email Visit Counter Logic)</h3>
+  <h3>5) getHome (Conditional Visits Logic)</h3>
   <pre><code>export const getHome = (req, res) => {
-  const email = req.cookies.userEmail || "guest";
+  const email = req.cookies.userEmail || "";
   const theme = req.cookies.theme || "light";
 
-  // Cookies se sabhi emails ka visits record nikalo
-  let allVisits = {};
-  try {
-    allVisits = req.cookies.allVisits ? JSON.parse(req.cookies.allVisits) : {};
-  } catch (e) {
-    allVisits = {};
+  let visits = 0;
+
+  // Check: Agar check box click hua tha tabhi visits cookie set hogi
+  if (req.cookies.userEmail) {
+    let allVisits = {};
+    try {
+      allVisits = req.cookies.allVisits ? JSON.parse(req.cookies.allVisits) : {};
+    } catch (e) {
+      allVisits = {};
+    }
+
+    visits = allVisits[email] || 0;
+
+    if (req.cookies.skipVisit) {
+      res.clearCookie("skipVisit");
+    } else {
+      visits = visits + 1;
+      allVisits[email] = visits;
+      res.cookie("visits", String(visits));
+      res.cookie("allVisits", JSON.stringify(allVisits));
+    }
   }
 
-  // Check: Agar pehle se is email ka visit hai toh wahi purana + 1,
-  // agar koi new email hai toh 1 se new data show karega
-  let visits = (allVisits[email] || 0) + 1;
-  allVisits[email] = visits;
-
-  // Cookies mein update karo
-  res.cookie("visits", String(visits));
-  res.cookie("allVisits", JSON.stringify(allVisits));
-
-  return res.render("home", { email, visits, theme });
+  return res.render("home", { 
+    email: email || "Guest (Checkbox Not Clicked)", 
+    visits: visits, 
+    theme 
+  });
 };</code></pre>
   <ul class="def-list">
-    <li><strong>Smart Multi-User Visits Tracking:</strong> Cookies ke andar <code>allVisits</code> JSON object store hota hai (e.g. <code>{"user1@gmail.com": 3, "user2@gmail.com": 1}</code>).</li>
-    <li><strong>Existing Email Verification:</strong> Agar login karne wala email pehle se cookies mein darz hai, toh uska purana visit count nikal kar usme +1 add kiya jata hai.</li>
-    <li><strong>New Email Verification:</strong> Agar koi bilkul nayi email aayi hai, toh <code>(allVisits[email] || 0)</code> zero hota hai aur uska visit <strong>1</strong> se fresh start hota hai.</li>
-    <li><code>home.ejs</code> ko <code>{ email, visits, theme }</code> pass karke render kiya jata hai.</li>
+    <li><strong>Check Box Click Verification:</strong> <code>visits</code> cookie ab <strong>sirf aur sirf tabhi</strong> create aur save hoti hai jab login ke waqt "Remember me" click kiya gaya ho.</li>
+    <li>Agar check box click nahi kiya gaya toh browser mein <code>userEmail</code>, <code>visits</code>, aur <code>allVisits</code> cookies set <strong>nahi</strong> hoti.</li>
   </ul>
 
   <h3>6) getDashboard</h3>
@@ -488,10 +521,12 @@ export const authRouter = router;</code></pre>
   <pre><code>export const setTheme = (req, res) => {
   const { theme } = req.body;
   res.cookie("theme", theme);
+  res.cookie("skipVisit", "true");
   return res.redirect("/");
 };</code></pre>
   <ul class="def-list">
-    <li><strong>Kaam:</strong> Form se select hui theme (<code>"light"</code> ya <code>"dark"</code>) ko cookie mein set karta hai aur home page reload karta hai.</li>
+    <li><strong>Kaam:</strong> Form se select hui theme (<code>"light"</code> ya <code>"dark"</code>) ko cookie mein set karta hai.</li>
+    <li><code>res.cookie("skipVisit", "true")</code> — Temporary flag set karta hai taaki redirect hone par home page visit count na badhaye.</li>
   </ul>
 
   <h3>8) logout</h3>
@@ -510,6 +545,7 @@ export const authRouter = router;</code></pre>
   res.clearCookie("visits");
   res.clearCookie("allVisits");
   res.clearCookie("theme");
+  res.clearCookie("skipVisit");
   return res.redirect("/dashboard");
 };</code></pre>
   <ul class="def-list">
