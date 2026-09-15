@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <title>Cookie Lab — Complete Project Guide & Documentation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+
+    @page {
+      size: A4;
+      margin: 18mm 16mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.6;
+      font-size: 13.5px;
+      padding: 24px;
+    }
+
+    .page-break {
+      page-break-after: always;
+      break-after: page;
+    }
+
+    /* Cover / Header */
+    .header {
+      border-bottom: 3px solid #4f46e5;
+      padding-bottom: 20px;
+      margin-bottom: 26px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #e0e7ff;
+      color: #4338ca;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e293b;
+      margin: 24px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 1.5px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    h3 {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: #334155;
+      margin: 16px 0 8px 0;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+
+    /* Flow Chart / Visual */
+    .flow-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 14px 18px;
+      margin: 14px 0;
+      font-size: 13px;
+    }
+
+    .flow-step {
+      display: inline-block;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .flow-arrow {
+      color: #6366f1;
+      font-weight: 800;
+      margin: 0 6px;
+    }
+
+    /* Code blocks */
+    pre {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 14px 16px;
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-x: auto;
+      margin: 10px 0 14px 0;
+    }
+
+    code {
+      font-family: 'Fira Code', monospace;
+      background: #f1f5f9;
+      color: #4f46e5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    pre code {
+      background: transparent;
+      color: inherit;
+      padding: 0;
+    }
+
+    /* Definitions list */
+    .def-list {
+      margin: 10px 0 18px 0;
+      list-style: none;
+    }
+
+    .def-list li {
+      position: relative;
+      padding-left: 18px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .def-list li::before {
+      content: "👉";
+      position: absolute;
+      left: 0;
+      font-size: 11px;
+      top: 1px;
+    }
+
+    .def-list strong {
+      color: #0f172a;
+    }
+
+    .callout {
+      background: #eff6ff;
+      border-left: 4px solid #3b82f6;
+      padding: 10px 14px;
+      border-radius: 0 6px 6px 0;
+      margin: 12px 0;
+      font-size: 12.5px;
+    }
+
+    .callout-warning {
+      background: #fffbeb;
+      border-left: 4px solid #f59e0b;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0;
+      font-size: 12.5px;
+    }
+
+    th, td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #f8fafc;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .file-tag {
+      background: #e2e8f0;
+      color: #1e293b;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PAGE 1: INTRO & ARCHITECTURE -->
+  <div class="header">
+    <span class="badge">Complete Engineering Guide</span>
+    <h1>Cookie Lab — Full Project Guide & Documentation</h1>
+    <p class="subtitle">Step-by-Step Implementation + Line-by-Line & Function Definitions (Express, Cookies, EJS, MVC)</p>
+  </div>
+
+  <h2>1. Project Overview & Exact Flow</h2>
+  <p>Is project ka maqsad yeh sikhna hai ki <strong>HTTP Cookies</strong> kaise kaam karti hain: unhe server par kaise <em>Set</em> kiya jata hai, browser kaise unhe automatically har request ke sath wapas bhejta hai, server par unhe kaise <em>Parse</em> aur <em>Read</em> karte hain, aur <em>Clear</em> kaise karte hain.</p>
+
+  <div class="flow-box">
+    <strong>Complete Request-Response Lifecycle Flow:</strong><br><br>
+    <span class="flow-step">Browser</span>
+    <span class="flow-arrow">➡️</span>
+    <span class="flow-step">Route (auth.routes.js)</span>
+    <span class="flow-arrow">➡️</span>
+    <span class="flow-step">Middleware (auth.middleware.js)</span>
+    <span class="flow-arrow">➡️</span>
+    <span class="flow-step">Controller (auth.controller.js)</span>
+    <span class="flow-arrow">➡️</span>
+    <span class="flow-step">EJS View / Response</span>
+  </div>
+
+  <ul class="def-list">
+    <li><strong>Step 1 (Login):</strong> User <code>/login</code> form submit karta hai (POST request).</li>
+    <li><strong>Step 2 (Set Cookie):</strong> Controller <code>res.cookie("IsLoggedIn", "true", { httpOnly: true })</code> execute karta hai. Response header mein <code>Set-Cookie</code> browser ko milta hai.</li>
+    <li><strong>Step 3 (Store in Browser):</strong> Browser is cookie ko apne storage mein store kar leta hai.</li>
+    <li><strong>Step 4 (Next Request):</strong> Jab user <code>/</code> ya <code>/dashboard</code> open karta hai, browser automatically request header ke sath <code>Cookie: IsLoggedIn=true; ...</code> bhejta hai.</li>
+    <li><strong>Step 5 (Parse via Middleware):</strong> <code>cookie-parser</code> raw cookie string ko parse karke <code>req.cookies</code> object banata hai.</li>
+    <li><strong>Step 6 (Auth Protection):</strong> <code>isAuthenticated</code> middleware check karta hai: Agar <code>req.cookies.IsLoggedIn === "true"</code> toh <code>next()</code>, warna <code>/login</code> par redirect.</li>
+    <li><strong>Step 7 (Logout):</strong> User Logout click karta hai toh <code>res.clearCookie()</code> se browser se cookie delete hoti hai.</li>
+  </ul>
+
+  <div class="callout callout-warning">
+    <strong>⚠️ Educational Note:</strong> Is project mein humne client-side demo authentication kiya hai (<code>IsLoggedIn="true"</code>). Real-world production apps mein password ko <strong>bcrypt</strong> se hash karke database (MongoDB/PostgreSQL) mein verify kiya jata hai aur secure cryptographically signed sessions ya JWT use kiye jaate hain.
+  </div>
+
+  <h2>2. Folder & File Structure</h2>
+  <pre><code>cook/
+├── package.json              # Project configuration, ES Modules ("type": "module"), scripts & packages
+├── server.js                # Main server file jahan express, views, middlewares bind hote hain
+├── routes/
+│   └── auth.routes.js       # Sabhi URLs/Routes ka centralized router
+├── middleware/
+│   └── auth.middleware.js   # Route protection middleware (isAuthenticated)
+├── controllers/
+│   └── auth.controller.js   # Pure application logic (functions) for auth, cookies, visits, theme
+├── views/
+│   ├── register.ejs         # User register page view
+│   ├── login.ejs            # User login view with 'Remember me'
+│   ├── home.ejs             # Protected Home page (Visit counter & Theme switcher)
+│   └── dashboard.ejs        # Cookie Inspector table (Live parsed cookies viewer)
+└── public/
+    └── style.css            # Modern glassmorphism CSS styling with Light/Dark theme support</code></pre>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 2: SERVER.JS & ROUTES -->
+  <h2>3. Step 1: Project Setup (package.json)</h2>
+  <p>Naya project initialize karne ke liye <code>npm init -y</code> chala kar <code>"type": "module"</code> configure kiya gaya taaki modern ES6 <code>import / export</code> syntax use ho sake.</p>
+
+  <pre><code>{
+  "name": "cookie-lab",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}</code></pre>
+
+  <h2>4. Step 2: Main Server Configuration (server.js)</h2>
+  <pre><code>import express from "express";
+import cookieParser from "cookie-parser";
+import { authRouter } from "./routes/auth.routes.js";
+
+const app = express();
+const PORT = 3000;
+
+app.set("view engine", "ejs");
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(authRouter);
+
+app.listen(PORT, () => {
+  console.log(`Server started: http://localhost:${PORT}`);
+});</code></pre>
+
+  <h3>Line-by-Line Explanation:</h3>
+  <ul class="def-list">
+    <li><code>import express from "express";</code> — Express web framework ko import karta hai jisse server aur HTTP routes banaye jaate hain.</li>
+    <li><code>import cookieParser from "cookie-parser";</code> — Incoming requests ke <code>Cookie</code> HTTP header ko parse karke <code>req.cookies</code> JavaScript object mein convert karta hai.</li>
+    <li><code>import { authRouter } from "./routes/auth.routes.js";</code> — Modular router file ko import karta hai jisme authentication aur pages ke routes define hain.</li>
+    <li><code>const app = express();</code> — Express application ka instance banata hai.</li>
+    <li><code>app.set("view engine", "ejs");</code> — Express ko batata hai ki HTML templates render karne ke liye <strong>EJS</strong> engine ka use karo. Default views folder <code>views/</code> hota hai.</li>
+    <li><code>app.use(express.static("public"));</code> — <code>public/</code> folder ke static assets (jaise <code>style.css</code>) ko directly browser ke liye serve karta hai.</li>
+    <li><code>app.use(express.urlencoded({ extended: true }));</code> — HTML form ke POST request data ko parse karke <code>req.body</code> mein provide karta hai.</li>
+    <li><code>app.use(cookieParser());</code> — cookie-parser middleware ko global level par activate karta hai.</li>
+    <li><code>app.use(authRouter);</code> — authRouter ke sabhi routes ko main app ke sath attach karta hai.</li>
+    <li><code>app.listen(PORT, ...);</code> — Port 3000 par incoming requests listen karne ke liye server start karta hai.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 3: ROUTES & MIDDLEWARE -->
+  <h2>5. Step 3: Centralized Routing (routes/auth.routes.js)</h2>
+  <pre><code>import { Router } from "express";
+import {
+  getLogin,
+  getRegister,
+  postRegister,
+  postLogin,
+  getHome,
+  getDashboard,
+  setTheme,
+  logout,
+  clearCookies
+} from "../controllers/auth.controller.js";
+import { isAuthenticated } from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+router.get("/register", getRegister);
+router.post("/register", postRegister);
+
+router.get("/login", getLogin);
+router.post("/login", postLogin);
+
+router.get("/", isAuthenticated, getHome);
+router.get("/dashboard", isAuthenticated, getDashboard);
+router.post("/theme", isAuthenticated, setTheme);
+router.post("/logout", logout);
+router.post("/clear-cookies", clearCookies);
+
+export const authRouter = router;</code></pre>
+
+  <h3>Function & Line Definitions:</h3>
+  <ul class="def-list">
+    <li><code>Router()</code> — Express ka mini router object banata hai jisse related endpoints ko alag file mein organize kar sakte hain.</li>
+    <li><code>router.get("/register", getRegister)</code> — Jab user <code>/register</code> URL par browser se aata hai toh registration page render hota hai.</li>
+    <li><code>router.post("/register", postRegister)</code> — Registration form submit hone par user ka form data process karta hai.</li>
+    <li><code>router.get("/login", getLogin)</code> — Login page render karta hai. Agar browser mein saved email hai to usko input field mein pre-fill karta hai.</li>
+    <li><code>router.post("/login", postLogin)</code> — Login form submit hone par login cookie aur remember-me check karke cookie set karta hai.</li>
+    <li><code>router.get("/", isAuthenticated, getHome)</code> — <strong>Protected Route</strong>: Pehle <code>isAuthenticated</code> middleware check karta hai; pass hone par hi <code>getHome</code> chalega.</li>
+    <li><code>router.get("/dashboard", isAuthenticated, getDashboard)</code> — <strong>Protected Route</strong>: Live browser cookies dekhne ke liye Cookie Dashboard render karta hai.</li>
+    <li><code>router.post("/theme", isAuthenticated, setTheme)</code> — User ki theme preference (light/dark) cookie mein save karta hai.</li>
+    <li><code>router.post("/logout", logout)</code> — User ka session clear karke login page par redirect karta hai.</li>
+    <li><code>router.post("/clear-cookies", clearCookies)</code> — Dashboard se ek click par saari cookies reset karta hai.</li>
+  </ul>
+
+  <h2>6. Step 4: Authentication Middleware (middleware/auth.middleware.js)</h2>
+  <pre><code>export const isAuthenticated = (req, res, next) => {
+  const isLoggedIn = req.cookies.IsLoggedIn;
+  console.log("IsLoggedIn:", isLoggedIn);
+  
+  if (isLoggedIn === "true") {
+    return next();
+  }
+  return res.redirect("/login");
+};</code></pre>
+
+  <h3>Function & Line Definitions:</h3>
+  <ul class="def-list">
+    <li><code>req.cookies.IsLoggedIn</code> — cookie-parser dwara parsed cookies mein se <code>IsLoggedIn</code> cookie ki value read karta hai.</li>
+    <li><code>if (isLoggedIn === "true") return next();</code> — Agar cookie match karti hai, toh <code>next()</code> call hota hai jo request ko controller handler tak aage jane deta hai.</li>
+    <li><code>return res.redirect("/login");</code> — Agar cookie missing hai ya false hai, toh browser ko turant <code>/login</code> page par redirect kar deta hai taaki unauthorized user page access na kar sake.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 4: CONTROLLERS (DETAILED DEFINITIONS) -->
+  <h2>7. Step 5: Application Controllers (controllers/auth.controller.js)</h2>
+  <p>Controller request ka actual business logic handle karta hai. Har function ke neeche uska purpose aur working explain ki gayi hai:</p>
+
+  <h3>1) getRegister</h3>
+  <pre><code>export const getRegister = (req, res) => {
+  return res.render("register");
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> <code>views/register.ejs</code> template ko render karke browser ko registration page display karta hai.</li>
+  </ul>
+
+  <h3>2) getLogin</h3>
+  <pre><code>export const getLogin = (req, res) => {
+  const userEmail = req.cookies.userEmail || "";
+  return res.render("login", { userEmail });
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> <code>req.cookies.userEmail</code> se saved email read karta hai (agar pichle session mein "Remember me" select tha).</li>
+    <li><code>views/login.ejs</code> ko <code>{ userEmail }</code> ke sath render karta hai taaki input box mein email pehle se bhari hui aaye.</li>
+  </ul>
+
+  <h3>3) postRegister</h3>
+  <pre><code>export const postRegister = (req, res) => {
+  const { name, email, password } = req.body;
+  console.log("REGISTER DATA:", { name, email, password });
+  return res.redirect("/login");
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> Registration form ka data (<code>req.body</code>) terminal mein log karta hai aur user ko <code>/login</code> par redirect karta hai.</li>
+  </ul>
+
+  <h3>4) postLogin</h3>
+  <pre><code>export const postLogin = (req, res) => {
+  const { email, password, remember } = req.body;
+
+  // Login cookie set karo
+  res.cookie("IsLoggedIn", "true", { httpOnly: true });
+
+  // Agar 'Remember me' par click kiya hai toh email save karo
+  if (remember) {
+    res.cookie("userEmail", email, { maxAge: 7 * 24 * 60 * 60 * 1000 });
+  } else {
+    res.cookie("userEmail", email);
+  }
+
+  return res.redirect("/");
+};</code></pre>
+  <ul class="def-list">
+    <li><code>res.cookie("IsLoggedIn", "true", { httpOnly: true })</code> — Authentication cookie set karta hai. <code>httpOnly: true</code> flag se client JavaScript (jaise <code>document.cookie</code>) is cookie ko chori ya modify nahi kar sakti, jo XSS attacks se protect karta hai.</li>
+    <li><code>if (remember)</code> — Agar user ne "Remember me" checkbox tick kiya tha, toh cookie ko <strong>7 days</strong> ka <code>maxAge</code> diya jata hai (<code>7 * 24 * 60 * 60 * 1000 ms</code>). Agar tick nahi kiya toh temporary session cookie banti hai.</li>
+    <li><code>res.redirect("/")</code> — Login successful hone ke baad user ko protected home page par bhej deta hai.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 5: CONTROLLERS (VISITS, THEME, LOGOUT) -->
+  <h3>5) getHome (Per-Email Visit Counter Logic)</h3>
+  <pre><code>export const getHome = (req, res) => {
+  const email = req.cookies.userEmail || "guest";
+  const theme = req.cookies.theme || "light";
+
+  // Cookies se sabhi emails ka visits record nikalo
+  let allVisits = {};
+  try {
+    allVisits = req.cookies.allVisits ? JSON.parse(req.cookies.allVisits) : {};
+  } catch (e) {
+    allVisits = {};
+  }
+
+  // Check: Agar pehle se is email ka visit hai toh wahi purana + 1,
+  // agar koi new email hai toh 1 se new data show karega
+  let visits = (allVisits[email] || 0) + 1;
+  allVisits[email] = visits;
+
+  // Cookies mein update karo
+  res.cookie("visits", String(visits));
+  res.cookie("allVisits", JSON.stringify(allVisits));
+
+  return res.render("home", { email, visits, theme });
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Smart Multi-User Visits Tracking:</strong> Cookies ke andar <code>allVisits</code> JSON object store hota hai (e.g. <code>{"user1@gmail.com": 3, "user2@gmail.com": 1}</code>).</li>
+    <li><strong>Existing Email Verification:</strong> Agar login karne wala email pehle se cookies mein darz hai, toh uska purana visit count nikal kar usme +1 add kiya jata hai.</li>
+    <li><strong>New Email Verification:</strong> Agar koi bilkul nayi email aayi hai, toh <code>(allVisits[email] || 0)</code> zero hota hai aur uska visit <strong>1</strong> se fresh start hota hai.</li>
+    <li><code>home.ejs</code> ko <code>{ email, visits, theme }</code> pass karke render kiya jata hai.</li>
+  </ul>
+
+  <h3>6) getDashboard</h3>
+  <pre><code>export const getDashboard = (req, res) => {
+  return res.render("dashboard", { cookies: req.cookies });
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> <code>dashboard.ejs</code> ko browser se aayi sabhi parsed cookies (<code>req.cookies</code>) pass karta hai taaki live table format mein cookies inspect ki ja sakein.</li>
+  </ul>
+
+  <h3>7) setTheme</h3>
+  <pre><code>export const setTheme = (req, res) => {
+  const { theme } = req.body;
+  res.cookie("theme", theme);
+  return res.redirect("/");
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> Form se select hui theme (<code>"light"</code> ya <code>"dark"</code>) ko cookie mein set karta hai aur home page reload karta hai.</li>
+  </ul>
+
+  <h3>8) logout</h3>
+  <pre><code>export const logout = (req, res) => {
+  res.clearCookie("IsLoggedIn", { httpOnly: true });
+  return res.redirect("/login");
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> Sirf <code>IsLoggedIn</code> session cookie ko delete karta hai. User ka <code>userEmail</code> aur <code>allVisits</code> history safe rehti hai taaki next time wahi email aane par uska purana count recall kiya ja sake.</li>
+  </ul>
+
+  <h3>9) clearCookies</h3>
+  <pre><code>export const clearCookies = (req, res) => {
+  res.clearCookie("IsLoggedIn", { httpOnly: true });
+  res.clearCookie("userEmail");
+  res.clearCookie("visits");
+  res.clearCookie("allVisits");
+  res.clearCookie("theme");
+  return res.redirect("/dashboard");
+};</code></pre>
+  <ul class="def-list">
+    <li><strong>Kaam:</strong> Testing aur demo ke liye ek hi click mein saari cookies (session, visits, theme, emails) wipe out kar deta hai.</li>
+  </ul>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 6: VIEWS & SUMMARY -->
+  <h2>8. Step 6: Frontend EJS Views</h2>
+
+  <h3>1) views/login.ejs (Remember Me Feature)</h3>
+  <pre><code>&lt;form action="/login" method="POST"&gt;
+  &lt;div class="form-group"&gt;
+    &lt;label for="email"&gt;Email Address&lt;/label&gt;
+    &lt;input type="email" id="email" name="email" value="&lt;%= userEmail %&gt;" required&gt;
+  &lt;/div&gt;
+
+  &lt;div class="form-group"&gt;
+    &lt;label for="password"&gt;Password&lt;/label&gt;
+    &lt;input type="password" id="password" name="password" required&gt;
+  &lt;/div&gt;
+
+  &lt;div class="form-group checkbox-row"&gt;
+    &lt;input type="checkbox" id="remember" name="remember" value="true" &lt;%= userEmail ? 'checked' : '' %&gt;&gt;
+    &lt;label for="remember"&gt;Remember me&lt;/label&gt;
+  &lt;/div&gt;
+
+  &lt;button type="submit" class="btn"&gt;Login&lt;/button&gt;
+&lt;/form&gt;</code></pre>
+
+  <h3>2) views/home.ejs (Visits & Theme Display)</h3>
+  <pre><code>&lt;body class="&lt;%= theme %&gt;"&gt;
+  &lt;div class="container"&gt;
+    &lt;div class="card"&gt;
+      &lt;div class="info-banner"&gt;
+        👤 User: &lt;strong&gt;&lt;%= email %&gt;&lt;/strong&gt;
+      &lt;/div&gt;
+
+      &lt;div class="stats-badge"&gt;
+        &lt;p&gt;Total Visits: &lt;b&gt;&lt;%= visits %&gt;&lt;/b&gt;&lt;/p&gt;
+      &lt;/div&gt;
+
+      &lt;form action="/theme" method="POST"&gt;
+        &lt;button class="btn btn-secondary" name="theme" value="light"&gt;☀️ Light&lt;/button&gt;
+        &lt;button class="btn btn-secondary" name="theme" value="dark"&gt;🌙 Dark&lt;/button&gt;
+      &lt;/form&gt;
+
+      &lt;a href="/dashboard" class="btn"&gt;📊 Cookie Dashboard&lt;/a&gt;
+
+      &lt;form action="/logout" method="POST"&gt;
+        &lt;button type="submit" class="btn btn-danger"&gt;🚪 Logout&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;</code></pre>
+
+  <h3>3) views/dashboard.ejs (Dynamic Cookie Loop)</h3>
+  <pre><code>&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Cookie Name (Key)&lt;/th&gt;
+      &lt;th&gt;Stored Value&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;% for (let key in cookies) { %&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;b&gt;&lt;%= key %&gt;&lt;/b&gt;&lt;/td&gt;
+      &lt;td&gt;&lt;code&gt;&lt;%= cookies[key] %&gt;&lt;/code&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;% } %&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+  <h2>9. Quick Revision Table</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Method / Property</th>
+        <th>Syntax Example</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>res.cookie()</code></td>
+        <td><code>res.cookie("name", "val", { httpOnly: true })</code></td>
+        <td>Browser ko response header ke jariye cookie store karne ko kehta hai.</td>
+      </tr>
+      <tr>
+        <td><code>req.cookies</code></td>
+        <td><code>const loggedIn = req.cookies.IsLoggedIn</code></td>
+        <td>Browser se incoming request ke saath aayi sabhi parsed cookies read karta hai.</td>
+      </tr>
+      <tr>
+        <td><code>res.clearCookie()</code></td>
+        <td><code>res.clearCookie("name")</code></td>
+        <td>Browser ko expired cookie bhejkar cookie delete karne ka signal deta hai.</td>
+      </tr>
+      <tr>
+        <td><code>httpOnly: true</code></td>
+        <td><code>{ httpOnly: true }</code></td>
+        <td>Client-side JavaScript ko cookie access karne se rokata hai (Security against XSS).</td>
+      </tr>
+      <tr>
+        <td><code>maxAge</code></td>
+        <td><code>{ maxAge: 7 * 24 * 60 * 60 * 1000 }</code></td>
+        <td>Cookie kitne milliseconds tak browser mein persist rahegi yeh define karta hai.</td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
